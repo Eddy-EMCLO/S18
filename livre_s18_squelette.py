@@ -134,7 +134,13 @@ class Livre:
         Returns:
             dict: Données du livre, incluant un discriminateur de type.
         """
-        raise NotImplementedError("À implémenter - voir l'énoncé du TP.")
+        return {"type" : "livre",
+                "titre" : self._titre,
+                "auteur" : self._auteur,
+                "isbn" : self._isbn,
+                "nb_pages" : self._nb_pages,
+                "annee" : self._annee,
+                }
 
     @classmethod
     def from_dict(cls, donnees):
@@ -143,7 +149,17 @@ class Livre:
         Returns:
             Livre: Un livre équivalent à celui qui a été sérialisé.
         """
-        raise NotImplementedError("À implémenter - voir l'énoncé du TP.")
+        
+        obj = cls(titre = donnees["titre"],
+                   auteur = donnees["auteur"],
+                   isbn = donnees["isbn"],
+                   nb_pages = donnees["nb_pages"],
+                   annee = donnees["annee"], 
+            
+        )
+        if not donnees["disponible"] :
+            obj.emprunter()
+        return obj
 
     # ----- Méthodes métier (fournies) ---------------------------------
 
@@ -234,12 +250,22 @@ class LivreNumerique(Livre):
 
     def to_dict(self):
         """Enrichit le dictionnaire parent avec le format de fichier."""
-        raise NotImplementedError("À implémenter - voir l'énoncé du TP.")
+        num = super.to_dict()
+        num["type"] = "LivreNumerique"
+        num["format_fichier"] = self._format_fichier
+        return num
 
     @classmethod
     def from_dict(cls, donnees):
         """Reconstruit un LivreNumerique à partir d'un dictionnaire."""
-        raise NotImplementedError("À implémenter - voir l'énoncé du TP.")
+        return cls(titre = donnees["titre"],
+                   auteur = donnees["auteur"],
+                   isbn = donnees["isbn"],
+                   nb_pages = donnees["nb_pages"],
+                   annee = donnees["annee"], 
+                   format_fichier = donnees["format_fichier"] 
+        )
+        
 
     def taille_estimee(self):
         """Retourne 'N pages [FORMAT]'."""
@@ -304,12 +330,22 @@ class LivreAudio(Livre):
 
     def to_dict(self):
         """Enrichit le dictionnaire parent avec la durée d'écoute."""
-        raise NotImplementedError("À implémenter - voir l'énoncé du TP.")
+        aud = super.to_dict()
+        aud["type"] = "audio"
+        aud["duree"] = self._duree_minutes 
+        
+        return aud 
 
     @classmethod
     def from_dict(cls, donnees):
         """Reconstruit un LivreAudio à partir d'un dictionnaire."""
-        raise NotImplementedError("À implémenter - voir l'énoncé du TP.")
+        return cls(titre = donnees["titre"],
+                   auteur = donnees["auteur"],
+                   isbn = donnees["isbn"],
+                   nb_pages = donnees["nb_pages"],
+                   annee = donnees["annee"], 
+                   duree = donnees["duree_minutes"] 
+        )
 
     def taille_estimee(self):
         """Retourne 'Xh YYmin', ou 'YYmin' si moins d'une heure."""

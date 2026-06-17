@@ -17,8 +17,8 @@ Pourquoi to_dict appelle-t-il super().to_dict() (enrichissement),
 alors que taille_estimee() de la S14 n'appelait pas super()
 (remplacement) ? Qu'est-ce qui distingue les deux situations ?
 
->>>
-
+>>> to_dict appelle super pour ajouter des attributs specifique sans remplacement 
+>>> un remplacement reecrirais completement la methode 
 
 
 ---------------------------------------------------------------------

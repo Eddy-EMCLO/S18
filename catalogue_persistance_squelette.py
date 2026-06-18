@@ -36,7 +36,17 @@ def livre_depuis_dict(donnees):
     Raises:
         ValueError: Si le champ "type" est absent ou inconnu du registre.
     """
-    raise NotImplementedError("À implémenter - voir l'énoncé du TP.")
+    if "type" not in donnees :
+        raise ValueError ("il faut un type")
+    L_type =  donnees["type"]
+    if L_type == "Livre":
+        return Livre.from_dict(donnees)
+    elif L_type == "LivreNumerique":
+        return LivreNumerique.from_dict(donnees)
+    elif L_type == "LivreAudio" :
+        return LivreAudio.from_dict(donnees)
+    else:
+        raise ValueError ("le type est inconnu")
 
 
 def sauvegarder_catalogue_json(livres, chemin):
@@ -46,7 +56,9 @@ def sauvegarder_catalogue_json(livres, chemin):
         livres (list[Livre]): Catalogue, éventuellement hétérogène.
         chemin (str): Chemin du fichier de destination.
     """
-    raise NotImplementedError("À implémenter - voir l'énoncé du TP.")
+    save = [livre.to_dict() for livre in livres]
+    with open (chemin , "w" ,encoding="utf-8") as f :
+        json.dump(save, f)
 
 
 def charger_catalogue_json(chemin):
@@ -58,4 +70,7 @@ def charger_catalogue_json(chemin):
     Returns:
         list[Livre]: Le catalogue reconstruit.
     """
-    raise NotImplementedError("À implémenter - voir l'énoncé du TP.")
+    with open(chemin, "r", encoding="utf-8") as f:
+        save = json.load(f)
+
+    return [livre_depuis_dict(i) for i in save]
